@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, Text, Alert, FlatList, View} from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 import * as api from '../../../api/index';
@@ -21,15 +21,38 @@ class Characters extends React.Component {
             return;
         }
 
+        try {
         const getHouseCharactersRes = await api.getHouseCharcaters(houseId);
-        console.log('ggetHouseCharactersRes', getHouseCharactersRes);
-    }
+        const characters = _.get(getHouseCharactersRes, 'data.records', []);
+        this.setState({characters})
+        } catch (e) {
+            Alert.alert(
+                'Atencion',
+                'Ha ocurrido un error con su conexion a internet.'
+            );
+        } 
+    };
 
     render() {
+        const {characters} = this.state;
         return (
-            <SafeAreaView style= {styles.container}>
-                
-            </SafeAreaView>
+            <SafeAreaView style={styles.container}>
+            <FlatList
+              data={characters}
+              renderItem={({item}) => (
+                <View style={{padding: 20}}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 16,
+                    }}>{`${item.nombre} (${item.edad})`}</Text>
+                </View>
+              )}
+              keyExtractor={(v, i) => `cell-${v.id}`}
+              style={styles.list}
+            />
+          </SafeAreaView>
+    
         );
     }
 
