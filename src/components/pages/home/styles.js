@@ -1,17 +1,12 @@
 import {StyleSheet} from 'react-native';
+import colors from '../../../assets/colors'
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'blue',
+        backgroundColor: colors.main,
     },
-
-    button: {
-        marginTop: 40,
-        backgroundColor: 'lime',
-        padding: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
-    },
+    list: {
+        paddingTop: 20
+    }
 });

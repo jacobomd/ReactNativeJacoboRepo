@@ -14,3 +14,8 @@ export const getHouses = () => {
     const url = '/casas';
     return instance.get(url);
 };
+
+export const getHouseCharcaters = (houseID) => {
+    const url = `/personajes?Ccasa=${houseID}`;
+    return instance.get(url);
+}

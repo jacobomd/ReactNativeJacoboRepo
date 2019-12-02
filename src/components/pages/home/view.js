@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {SafeAreaView, Text, FlatList, View, Alert} from 'react-native';
 import styles from './styles';
+import { HouseCard } from '../../molecules';
 import {Actions} from 'react-native-router-flux';
 import * as api from '../../../api';
 import _ from 'lodash';
@@ -26,11 +27,11 @@ class Home extends Component {
         });
 
         console.log('YO  NO ESPERO: ', this.state.houses); */
-
         try {
         const getHousesRes = await api.getHouses();
         const houses = _.get(getHousesRes, 'data.records', []);
-        this.setState({houses: houses});
+        const housesss = {houses: houses}
+        this.setState(housesss);
         } catch (e) {
              Alert.alert(
                 'Atencion',
@@ -39,12 +40,16 @@ class Home extends Component {
         }
     };
 
-    _renderItem = ({item, index}) => {
-        return (
-            <View>
-                <Text>{item.nombre}</Text>
-            </View>
-        );
+    _onHouseTapped = house => {
+        Actions.Characters({house, title: house.nombre});
+    };
+
+    _renderItem = ({item}) => {
+        return <HouseCard 
+            house={item}
+            onPress={this._onHouseTapped}
+          />;
+    
     };
 
     render() {
@@ -55,7 +60,10 @@ class Home extends Component {
                 <FlatList
                 data = {houses}
                 renderItem = {this._renderItem}
-                keyExtractor = {(v, i) => `cell-${v.id}`} />
+                keyExtractor = {(v, i) => `cell-${v.id}`}
+                numColumns = {2} 
+                style = {styles.list}
+                />
             </SafeAreaView>
         );
     }

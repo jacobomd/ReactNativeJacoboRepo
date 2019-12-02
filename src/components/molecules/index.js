@@ -1,2 +1,3 @@
-import component from './view';
-export default component;
+import HouseCard from './house-card';
+
+export {HouseCard};
