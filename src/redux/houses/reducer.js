@@ -1,3 +1,5 @@
+import * as types from './types';
+
 const initialState = {
     isFetching: false,
     list: [],

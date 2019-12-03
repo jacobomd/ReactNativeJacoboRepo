@@ -1,47 +1,18 @@
 import React, {Component} from 'react';
-import {SafeAreaView, Text, FlatList, View, Alert} from 'react-native';
+import {SafeAreaView, FlatList} from 'react-native';
 import styles from './styles';
+import PropTypes from 'prop-types';
 import { HouseCard } from '../../molecules';
-import {Actions} from 'react-native-router-flux';
-import * as api from '../../../api';
-import _ from 'lodash';
 
 class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            houses: [],
-        };
-        this._loadHousesList();
+        props.fetchHouseList();
     }
 
-    _loadHousesList = async () => {
-/*         api.getHouses()
-        .then(res => {
-            console.log('getHouses res: ', res);
-            this.setState({houses: res.data.records});
-        })
-        .catch(error => {
-            console.log('getHouses error: ', error)
-        });
-
-        console.log('YO  NO ESPERO: ', this.state.houses); */
-        try {
-        const getHousesRes = await api.getHouses();
-        const houses = _.get(getHousesRes, 'data.records', []);
-        const housesss = {houses: houses}
-        this.setState(housesss);
-        } catch (e) {
-             Alert.alert(
-                'Atencion',
-                'Ha ocurrido un error, revise su conexion de internet porfavor.',
-                ); 
-        }
-    };
-
     _onHouseTapped = house => {
-        Actions.Characters({house, title: house.nombre});
+       this.props.updateSelectedHouse(house);
     };
 
     _renderItem = ({item}) => {
@@ -53,12 +24,12 @@ class Home extends Component {
     };
 
     render() {
-        const {houses} = this.state;
-        console.log('RENDER: this.state.houses: ', houses);
+        const {housesList} = this.props;
+        console.log('this.props', this.props);
         return (
             <SafeAreaView style= {styles.container}>
                 <FlatList
-                data = {houses}
+                data = {housesList}
                 renderItem = {this._renderItem}
                 keyExtractor = {(v, i) => `cell-${v.id}`}
                 numColumns = {2} 
@@ -68,5 +39,12 @@ class Home extends Component {
         );
     }
 }
+
+Home.propTypes = {
+    housesList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    fetchHousesList: PropTypes.func.isRequired,
+    updateSelectedHouse: PropTypes.func.isRequired,
+  };
+  
 
 export default Home;
