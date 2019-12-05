@@ -1,14 +1,20 @@
 import {connect} from 'react-redux';
+import {charactersActions} from '../../../redux/characters';
 import View from './view';
 
 const mapStateToProps = state => {
   return {
-    house: state.houses.item,
+    characterslist: state.characters.list,
+    charactersFetching: state.characters.isFetching,
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
-  return {};
+  return {
+    fetchHouseCharactersList: () =>
+      dispatch(charactersActions.fetchHouseCharactersList())
+
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(View);

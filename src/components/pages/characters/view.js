@@ -9,36 +9,17 @@ class Characters extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            characters: []
-        };
-        this._loadHouseCharactersList();
+       props.fetchHouseCharactersList();
+       console.log('this.props: ', this.props);
     }
 
-    _loadHouseCharactersList = async () => {
-        const houseId = _.get(this.props, 'house.id', null);
-        if (houseId === null) {
-            return;
-        }
-
-        try {
-        const getHouseCharactersRes = await api.getHouseCharcaters(houseId);
-        const characters = _.get(getHouseCharactersRes, 'data.records', []);
-        this.setState({characters})
-        } catch (e) {
-            Alert.alert(
-                'Atencion',
-                'Ha ocurrido un error con su conexion a internet.'
-            );
-        } 
-    };
-
     render() {
-        const {characters} = this.state;
+        const {charactersList} = this.props;
+       // console.log('charactersList: ', charactersList);
         return (
             <SafeAreaView style={styles.container}>
             <FlatList
-              data={characters}
+              data={charactersList}
               renderItem={({item}) => (
                 <View style={{padding: 20}}>
                   <Text
@@ -59,7 +40,10 @@ class Characters extends React.Component {
 }
 
 Characters.propTypes = {
-    house: PropTypes.object.isRequired,
+  charactersList: PropTypes.arrayOf(PropTypes.object),
+  charactersFetching: PropTypes.bool,
+  fetchHouseCharactersList: PropTypes.func,
+
   };
   
 
