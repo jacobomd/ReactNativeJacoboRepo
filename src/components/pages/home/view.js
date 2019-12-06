@@ -25,7 +25,6 @@ class Home extends Component {
 
     render() {
         const {housesList} = this.props;
-        console.log('this.props', this.props);
         return (
             <SafeAreaView style= {styles.container}>
                 <FlatList
@@ -42,7 +41,7 @@ class Home extends Component {
 
 Home.propTypes = {
     housesList: PropTypes.arrayOf(PropTypes.object).isRequired,
-    fetchHousesList: PropTypes.func.isRequired,
+    fetchHouseList: PropTypes.func.isRequired,
     updateSelectedHouse: PropTypes.func.isRequired,
   };
   

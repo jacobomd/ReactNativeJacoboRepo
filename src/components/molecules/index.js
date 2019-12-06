@@ -1,3 +1,3 @@
 import HouseCard from './house-card';
-
-export {HouseCard};
+import CharacterCard from './character-card';
+export {HouseCard, CharacterCard};

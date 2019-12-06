@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, Text, Alert, FlatList, View} from 'react-native';
+import {SafeAreaView, Text, RefreshControl, FlatList, View} from 'react-native';
+import {CharacterCard} from '../../molecules'
 import PropTypes from 'prop-types';
 import styles from './styles';
 import * as api from '../../../api/index';
@@ -10,15 +11,25 @@ class Characters extends React.Component {
     constructor(props) {
         super(props);
        props.fetchHouseCharactersList();
-       console.log('this.props: ', this.props);
+    }
+
+    _renderItem = ({item}) => {
+      return <CharacterCard character={item} />;
     }
 
     render() {
-        const {charactersList} = this.props;
-       // console.log('charactersList: ', charactersList);
+        const {charactersList, charactersFetching, fetchHouseCharactersList} = this.props;
         return (
             <SafeAreaView style={styles.container}>
             <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={charactersFetching}
+                  onRefresh={fetchHouseCharactersList}
+                  colors={['#FFF']}
+                  tintColor={'white'}
+                />
+              }
               data={charactersList}
               renderItem={({item}) => (
                 <View style={{padding: 20}}>

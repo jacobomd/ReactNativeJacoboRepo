@@ -32,7 +32,6 @@ export const updateList = value => ({
         dispatch(updateFetching(true));
         const getHouseCharactersRes = await api.getHouseCharacters(house.id);
         const characters = _.get(getHouseCharactersRes, 'data.records', []);
-        console.log('characters: ', characters);
         dispatch(updateList(characters));
       } catch (e) {
         console.log('e: ', e);
