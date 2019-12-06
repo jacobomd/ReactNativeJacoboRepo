@@ -31,15 +31,7 @@ class Characters extends React.Component {
                 />
               }
               data={charactersList}
-              renderItem={({item}) => (
-                <View style={{padding: 20}}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 16,
-                    }}>{`${item.nombre} (${item.edad})`}</Text>
-                </View>
-              )}
+              renderItem={this._renderItem}
               keyExtractor={(v, i) => `cell-${v.id}`}
               style={styles.list}
             />
