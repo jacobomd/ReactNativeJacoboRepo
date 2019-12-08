@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Router, Scene, Actions} from 'react-native-router-flux';
-import {Home, Characters, CharactersAdd} from '../../pages';
+import {Home, Characters, CharactersAdd, CharactersEdit, CharactersDetail} from '../../pages';
 import colors from '../../../assets/colors';
 
 class Routes extends Component {
@@ -33,6 +33,26 @@ class Routes extends Component {
             backButtonTintColor={colors.white}
             backTitleEnabled={true}
           />
+          <Scene
+            key="CharactersEdit"
+            component={CharactersEdit}
+            title={'Editar Personaje'}
+            navigationBarStyle={{backgroundColor: colors.navBar}}
+            titleStyle={{color: colors.white}}
+            backButtonTextStyle={{color: colors.white}}
+            backButtonTintColor={colors.white}
+            backTitleEnabled={true}
+          />
+
+          <Scene
+            key="CharactersDetail"
+            component={CharactersDetail}
+            navigationBarStyle={{backgroundColor: colors.navBar}}
+            backButtonTextStyle={{color: colors.white}}
+            backButtonTintColor={colors.white}
+            backTitleEnabled={true}
+          />
+
         </Scene>
       </Router>
     );

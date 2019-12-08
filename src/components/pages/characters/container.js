@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 import {charactersActions} from '../../../redux/characters';
 import View from './view';
+import {Actions} from 'react-native-router-flux';
 
 const mapStateToProps = state => {
   return {
@@ -17,6 +18,11 @@ const mapDispatchToProps = (dispatch, props) => {
     initList: () =>
       dispatch(charactersActions.initList()),
       fetchNextPage: () => dispatch(charactersActions.fetchNextPage()),
+      updateSelectedCharacter: character => {
+        dispatch(charactersActions.updateItem(character));
+        Actions.CharactersDetail();
+      },
+  
   };
 };
 

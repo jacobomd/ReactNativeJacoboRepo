@@ -26,7 +26,9 @@ class Characters extends React.Component {
   
 
     _renderItem = ({item}) => {
-      return <CharacterCard character={item} />;
+      return <CharacterCard 
+        character={item}
+        onPress={this.props.updateSelectedCharacter}/>;
     }
 
     render() {
@@ -64,6 +66,7 @@ Characters.propTypes = {
   charactersFetching: PropTypes.bool,
   initList: PropTypes.func,
   fetchNextPage: PropTypes.func,
+  updateSelectedCharacter: PropTypes.func,
   };
   
 

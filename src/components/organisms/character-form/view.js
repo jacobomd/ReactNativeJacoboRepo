@@ -17,12 +17,17 @@ import _ from 'lodash';
 
 class CharactersAdd extends React.Component {
 
-    state = {
-        image: null,
-        name: '',
-        age: '',
-        errors: {},
+  constructor(props) {
+    super(props);
+    const imageDir = _.get(props, 'character.image_dir');
+    this.state = {
+      image: imageDir ? {uri: imageDir} : null,
+      name: _.get(props, 'character.nombre', ''),
+      age: _.get(props, 'character.edad', '').toString(),
+      errors: {},
     };
+  }
+
 
     _onSubmit = () => {
       const {image, name, age} = this.state;
@@ -44,7 +49,7 @@ class CharactersAdd extends React.Component {
             ? 'data:image/jpeg;base64,' + image.data
             : null,
         };
-        this.props.postCharacter(data);
+        this.props.onSubmit(data);
       }
     };
         
@@ -103,5 +108,12 @@ class CharactersAdd extends React.Component {
         )
     }
 }
+
+CharactersAdd.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  character: PropTypes.object,
+  isFetching: PropTypes.bool,
+};
+
 
 export default CharactersAdd;

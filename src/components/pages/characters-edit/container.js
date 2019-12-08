@@ -5,12 +5,13 @@ import {charactersActions} from '../../../redux/characters'
 const mapStateToProps = state => {
   return {
     isFetching: state.characters.isFetching,
+    character: state.characters.item,
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    onSubmit: data => dispatch(charactersActions.postCharacter(data)),
+    onSubmit: data => dispatch(charactersActions.updateCharacter(data)),
   };
 };
 

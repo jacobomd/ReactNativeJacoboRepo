@@ -26,4 +26,16 @@ export const postHouseCharacter = data => {
     const url = `/personajes`;
     return instance.post(url, data);
 };
+
+export const updateHouseCharacter = (characterId, data) => {
+    const url = `/personajes/${characterId}`;
+    return instance.patch(url, data);
+  };
+  
+
+export const deleteHouseCharacter = characterId => {
+    const url = `/personajes/${characterId}`;
+    return instance.delete(url);
+  };
+  
   

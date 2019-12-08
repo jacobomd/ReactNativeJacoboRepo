@@ -6,12 +6,14 @@ import _ from 'lodash';
 
 class CharacterCard extends Component {
   render() {
-    const {character} = this.props;
+    const {character, onPress} = this.props;
     const name = _.get(character, 'nombre', '');
     const age = _.get(character, 'edad', '');
     const imageDir = _.get(character, 'image_dir');
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity
+       style={styles.container}
+       onPress={() => onPress(character)}>
         <View style={styles.infoContainer}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.age}>{age}</Text>
@@ -24,6 +26,7 @@ class CharacterCard extends Component {
 
 CharacterCard.propTypes = {
   character: PropTypes.object.isRequired,
+  onPress: PropTypes.func,
 };
 
 export default CharacterCard;

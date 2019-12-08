@@ -91,8 +91,7 @@ export const updateList = (list, total) => ({
 
         // OPT 2
         await api.postHouseCharacter(characterData);
-        dispatch(fetchHouseCharactersList());
-        //dispatch(initList());
+        dispatch(initList());
   
         Actions.popTo('Characters');
       } catch (e) {
@@ -102,5 +101,44 @@ export const updateList = (list, total) => ({
       }
     };
   };
+
+  export const deleteCharacter = character => async (dispatch, getState) => {
+    if (!character) {
+      return;
+    }
+
+    try {
+      dispatch(updateFetching(true));
+      await api.deleteHouseCharacter(character.id);
+      dispatch(initList());
+      Actions.popTo('Characters');
+      dispatch(updateItem(null));
+    } catch (e) {
+      Alert.alert('Error', 'Error eliminando el personaje');
+    } finally {
+      dispatch(updateFetching(false));
+    }
+  };
+
+  export const updateCharacter = data => async (dispatch, getState) => {
+    const {item: character} = getState().characters;
+    if (!character || !data) {
+      return;
+    }
+  
+    try {
+      dispatch(updateFetching(true));
+      const characterRes = await api.updateHouseCharacter(character.id, data);
+      const newCharacter = _.get(characterRes, 'data.record');
+      dispatch(updateItem(newCharacter));
+      Actions.popTo('CharactersDetail');
+    } catch (e) {
+      Alert.alert('Error', 'Error actualizando el personaje');
+    } finally {
+      dispatch(updateFetching(false));
+    }
+  };
+  
+  
   
   
