@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from '../config/api';
+import qs from 'qs';
 
 const instance = axios.create({
     baseURL: BASE_URL,
@@ -15,10 +16,11 @@ export const getHouses = () => {
     return instance.get(url);
 };
 
-export const getHouseCharacters = (houseID) => {
-    const url = `/personajes?casa=${houseID}`;
+export const getHouseCharacters = params => {
+    const url = `/personajes?${qs.stringify(params, {skipNulls: true})}`;
     return instance.get(url);
-};
+  };
+  
 
 export const postHouseCharacter = data => {
     const url = `/personajes`;

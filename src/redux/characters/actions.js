@@ -4,9 +4,10 @@ import _ from 'lodash';
 import * as api from '../../api';
 import {Actions} from 'react-native-router-flux';
 
-export const updateList = value => ({
+const LIMIT = 6;
+export const updateList = (list, total) => ({
     type: types.UPDATE_CHARACTERS_LIST,
-    value: value,
+    value: {list, total},
   });
   
   export const updateItem = value => ({
@@ -19,20 +20,47 @@ export const updateList = value => ({
     value,
   });
 
-  export const fetchHouseCharactersList = () => {
+  export const updateOffset = value => ({
+    type: types.UPDATE_CHARACTERS_OFFSET,
+    value,
+  });
+  
+  export const initList = () => {
+    return dispatch => {
+      dispatch(updateList([], 0));
+      dispatch(updateOffset(0));
+      dispatch(fetchHouseCharactersList());
+    };
+  };
+  
+  export const fetchNextPage = () => {
+    return (dispatch, getState) => {
+      const {offset} = getState().characters;
+      dispatch(updateOffset(offset + LIMIT));
+      dispatch(fetchHouseCharactersList());
+    };
+  };
+  
+
+ const fetchHouseCharactersList = () => {
     return async (dispatch, getState) => {
       //const house = getState().houses.item
       const {item: house} = getState().houses;
-      
+      const {offset, list: prevList} = getState().characters;
       if (!house) {
         return;
       }
   
       try {
         dispatch(updateFetching(true));
-        const getHouseCharactersRes = await api.getHouseCharacters(house.id);
-        const characters = _.get(getHouseCharactersRes, 'data.records', []);
-        dispatch(updateList(characters));
+        const params = {casa: house.id, offset, limit: LIMIT};
+        const getHouseCharactersRes = await api.getHouseCharacters(params);
+
+
+        const newList = _.get(getHouseCharactersRes, 'data.records', []);
+        const list = [...prevList, ...newList];
+        const total = parseInt(_.get(getHouseCharactersRes, 'data.total', 0));
+        dispatch(updateList(list, total));
       } catch (e) {
         Alert.alert(
           'Atención',

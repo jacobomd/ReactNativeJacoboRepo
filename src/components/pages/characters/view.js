@@ -10,26 +10,42 @@ class Characters extends React.Component {
 
     constructor(props) {
         super(props);
-       props.fetchHouseCharactersList();
+       props.initList();
     }
+
+    _onEndReached = () => {
+      const {charactersTotal, charactersList, charactersFetching} = this.props;
+      if (
+        charactersList.length &&
+        !charactersFetching &&
+        charactersTotal > charactersList.length
+      ) {
+        this.props.fetchNextPage();
+      }
+    };
+  
 
     _renderItem = ({item}) => {
       return <CharacterCard character={item} />;
     }
 
     render() {
-        const {charactersList, charactersFetching, fetchHouseCharactersList} = this.props;
+        const {charactersList, 
+          charactersFetching, 
+          initList} = this.props;
         return (
             <SafeAreaView style={styles.container}>
             <FlatList
               refreshControl={
                 <RefreshControl
                   refreshing={charactersFetching}
-                  onRefresh={fetchHouseCharactersList}
+                  onRefresh={initList}
                   colors={['#FFF']}
                   tintColor={'white'}
                 />
               }
+              onEndReached={this._onEndReached}
+              onEndReachedThreshold={0.8}
               data={charactersList}
               renderItem={this._renderItem}
               keyExtractor={(v, i) => `cell-${v.id}`}
@@ -44,9 +60,10 @@ class Characters extends React.Component {
 
 Characters.propTypes = {
   charactersList: PropTypes.arrayOf(PropTypes.object),
+  charactersTotal: PropTypes.number,
   charactersFetching: PropTypes.bool,
-  fetchHouseCharactersList: PropTypes.func,
-
+  initList: PropTypes.func,
+  fetchNextPage: PropTypes.func,
   };
   
 

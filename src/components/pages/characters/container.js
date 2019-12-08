@@ -5,6 +5,8 @@ import View from './view';
 const mapStateToProps = state => {
   return {
     charactersList: state.characters.list,
+    charactersTotal: state.characters.total,
+    charactersOffset: state.characters.offset,
     charactersFetching: state.characters.isFetching,
     
   };
@@ -12,9 +14,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    fetchHouseCharactersList: () =>
-      dispatch(charactersActions.fetchHouseCharactersList()),
-
+    initList: () =>
+      dispatch(charactersActions.initList()),
+      fetchNextPage: () => dispatch(charactersActions.fetchNextPage()),
   };
 };
 
